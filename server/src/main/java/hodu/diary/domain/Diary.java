@@ -4,6 +4,7 @@ import hodu.common.model.BaseEntity;
 import hodu.member.domain.Member;
 import jakarta.persistence.*;
 
+@Entity
 public class Diary extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
