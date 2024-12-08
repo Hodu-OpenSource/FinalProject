@@ -14,4 +14,8 @@ public class BaseEntity {
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private Timestamp createdDate;
+
+    public Timestamp getCreatedDate() {
+        return createdDate;
+    }
 }
