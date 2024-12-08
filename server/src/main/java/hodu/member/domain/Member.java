@@ -30,4 +30,20 @@ public class Member extends BaseEntity {
     public void addAttendanceCount () {
         attendanceCount++;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getLoginId() {
+        return loginId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public long getAttendanceCount() {
+        return attendanceCount;
+    }
 }
