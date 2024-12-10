@@ -49,5 +49,5 @@ def record_audio() :
     wf.close()
     
     print(f"저장 경로 : {file_path}")
-    return "./python_diary/audio/audio.wav"
+    return file_path
 
