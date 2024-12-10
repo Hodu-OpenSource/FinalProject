@@ -1,6 +1,7 @@
 import os
 import pyaudio
 import wave
+import keyboard
 
 CHUNK = 1024 #오디오 데이터를 읽는 최소 단위
 FORMAT = pyaudio.paInt16 #오디오 샘플의 데이터 형식
@@ -8,7 +9,6 @@ CHANNELS = 2 #오디오 채널 수. 스테레오 녹음이기에 2로 설정
 RATE = 22050 #샘플링 속도. 1초당 녹음하는 샘플의 수를 의미한다
 
 # 저장 디렉토리 설정
-print("현재 작업 디렉토리:", os.getcwd())
 output_dir = "./python_diary/audio/" 
 os.makedirs(output_dir, exist_ok=True)  # 디렉토리 없으면 생성
 
@@ -24,15 +24,14 @@ stream = p.open(format=FORMAT,
                 input=True,
                 frames_per_buffer=CHUNK)
 
-print('start recording')
+print('녹음 시작. q 버튼을 눌러 녹음을 종료하세요')
 
 frames = [] #녹음 데이터를 저장할 리스트 
-seconds = 3 #녹음할 시간(초)
-for i in range(0, int(RATE / CHUNK * seconds)): # 녹음 동안 읽어야할 프레임 수
+while not keyboard.is_pressed('q') : 
     data = stream.read(CHUNK) #오디오 데이터를 읽어오고 
     frames.append(data) #저장
 
-print('record stopped')
+print('녹음 종료')
 
 stream.stop_stream() #스트림을 멈추기
 stream.close() #스트림 닫기
