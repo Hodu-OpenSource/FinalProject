@@ -2,6 +2,7 @@ import os
 import pyaudio
 import wave
 import keyboard
+from datetime import datetime
 
 CHUNK = 1024 #오디오 데이터를 읽는 최소 단위
 FORMAT = pyaudio.paInt16 #오디오 샘플의 데이터 형식
@@ -12,8 +13,10 @@ RATE = 22050 #샘플링 속도. 1초당 녹음하는 샘플의 수를 의미한�
 output_dir = "./python_diary/audio/" 
 os.makedirs(output_dir, exist_ok=True)  # 디렉토리 없으면 생성
 
+current_time = datetime.now().strftime("%Y-%m-%d_%H%M%S")  # 현재 시간 저장
 # 파일 경로 설정. output_dir로
-output_file = os.path.join(output_dir, "output.wav")
+# 파일 이름은 current_time으로 설정
+output_file = os.path.join(output_dir, f"{current_time}.wav")
 
 p = pyaudio.PyAudio()# pyAudio 객체 생성
 
@@ -27,7 +30,7 @@ stream = p.open(format=FORMAT,
 print('녹음 시작. q 버튼을 눌러 녹음을 종료하세요')
 
 frames = [] #녹음 데이터를 저장할 리스트 
-while not keyboard.is_pressed('q') : 
+while not keyboard.is_pressed('enter') : #엔터를 누르기 전까지 녹음 수행
     data = stream.read(CHUNK) #오디오 데이터를 읽어오고 
     frames.append(data) #저장
 
