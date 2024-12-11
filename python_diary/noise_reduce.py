@@ -4,7 +4,7 @@ import os
 
 def reduce_noise(audio_file_path) :
     # 저장 디렉토리 설정
-    save_dir = "../python_diary/reduce_noise_audio/"
+    save_dir = "./python_diary/reduce_noise_audio/"
     os.makedirs(save_dir, exist_ok=True)  # 디렉토리 없으면 생성
 
     #노이즈 감소 녹음본 이름과 경로 설정
