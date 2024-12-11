@@ -82,7 +82,11 @@ public class DiaryService {
 
     @Transactional
     public void deleteDiary(Long diaryId) {
+        Diary diary = diaryRepository.findById(diaryId)
+                        .orElseThrow();
+        diary.getMember().resetIsDiaryWrittenTodayStatus();
         diaryRepository.deleteById(diaryId);
+
     }
 
     @Transactional
@@ -91,5 +95,12 @@ public class DiaryService {
                 .orElseThrow();
 
         diary.updateContent(editDiaryRequest.content());
+    }
+
+    @Transactional(readOnly = true)
+    public DiaryDTO getRecentDiary(Long memberId) {
+        Diary diary = diaryRepository.findFirstByMemberIdOrderByCreatedDateDesc(memberId)
+                .orElseThrow();
+        return DiaryDTO.of(diary);
     }
 }
