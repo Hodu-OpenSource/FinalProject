@@ -11,7 +11,7 @@ def record_audio() :
     RATE = 22050 #샘플링 속도. 1초당 녹음하는 샘플의 수를 의미한다
 
     # 저장 디렉토리 설정
-    save_dir = "./python_diary/audio/" 
+    save_dir = "../python_diary/audio/" 
     os.makedirs(save_dir, exist_ok=True)  # 디렉토리 없으면 생성
     file_name = datetime.now().strftime("%Y-%m-%d_%H%M%S")  # 현재 시간을 오디오 파일명으로 설정
     # 파일 경로 설정. output_dir로
@@ -27,14 +27,14 @@ def record_audio() :
                     input=True,
                     frames_per_buffer=CHUNK)
 
-    print('녹음 시작. 엔터를 눌러 녹음을 종료하세요')
+    print('녹음 시작. 엔터를 눌러 녹음을 종료하세요', flush=True)
 
     frames = [] #녹음 데이터를 저장할 리스트 
     while not keyboard.is_pressed('enter') : #엔터를 누르기 전까지 녹음 수행
         data = stream.read(CHUNK) #오디오 데이터를 읽어오고 
         frames.append(data) #저장
 
-    print('녹음 종료')
+    print('녹음 종료', flush=True)
 
     stream.stop_stream() #스트림을 멈추기
     stream.close() #스트림 닫기
@@ -48,6 +48,7 @@ def record_audio() :
     wf.writeframes(b''.join(frames))
     wf.close()
     
-    print(f"저장 경로 : {file_path}")
-    return file_path
+    print(f"저장 경로 : {file_path}", flush=True)
+    return  "../python_diary/audio/audio.wav" 
+
 
