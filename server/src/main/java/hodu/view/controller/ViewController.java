@@ -51,4 +51,13 @@ public class ViewController {
         return "diaryMainPage";
     }
 
+    @GetMapping("/diaryDetail/{diaryId}")
+    public String diaryDetail (
+            @PathVariable("diaryId") Long diaryId,
+            Model model
+    ) {
+        DiaryDTO diary = diaryService.getDiary(diaryId);
+        model.addAttribute("diary", diary);
+        return "diaryDetailPage";
+    }
 }

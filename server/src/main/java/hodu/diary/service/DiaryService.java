@@ -67,4 +67,10 @@ public class DiaryService {
 
         return diaryDTOList;
     }
+
+    public DiaryDTO getDiary(Long diaryId) {
+        Diary diary = diaryRepository.findById(diaryId)
+                .orElseThrow();
+        return DiaryDTO.of(diary);
+    }
 }

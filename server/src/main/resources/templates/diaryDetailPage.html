@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diary Detail Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f9f9f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #007BFF;
+            margin-bottom: 20px;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        .section-content {
+            font-size: 1.2rem;
+            color: #333;
+        }
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>일기 상세 보기</h1>
+
+    <!-- 생성일자 -->
+    <div class="section">
+        <div class="section-title">일기 쓴 날</div>
+        <div class="section-content" th:text="${diary.createdDate}"></div>
+    </div>
+
+    <!-- 주된 감정 -->
+    <div class="section">
+        <div class="section-title">주된 감정</div>
+        <div class="section-content" th:text="${diary.mainEmotion}"></div>
+    </div>
+
+    <!-- 일기 내용 -->
+    <div class="section">
+        <div class="section-title">일기 내용</div>
+        <div class="section-content" th:text="${diary.content}"></div>
+    </div>
+
+    <!-- 뒤로 가기 버튼 -->
+    <button class="back-button" onclick="goBack()">뒤로 가기</button>
+</div>
+
+<script>
+    function goBack() {
+        // 로컬 스토리지에서 memberId 값을 가져옵니다.
+        const memberId = localStorage.getItem("memberId");
+
+        // memberId가 없으면 경고 메시지를 표시합니다.
+        if (!memberId) {
+            alert("회원 ID를 찾을 수 없습니다.");
+            return;
+        }
+
+        // memberId를 pathVariable로 포함하여 페이지를 이동합니다.
+        window.location.href = `/view/diaryMainPage/${memberId}`;
+    }
+</script>
+</body>
+</html>
