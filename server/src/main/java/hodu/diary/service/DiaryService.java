@@ -2,11 +2,13 @@ package hodu.diary.service;
 
 import hodu.diary.domain.Diary;
 import hodu.diary.dto.DiaryDTO;
+import hodu.diary.dto.request.EditDiaryRequest;
 import hodu.diary.repository.DiaryRepository;
 import hodu.member.domain.Member;
 import hodu.member.exception.MemberNotFoundException;
 import hodu.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,6 +26,7 @@ public class DiaryService {
         this.memberRepository = memberRepository;
     }
 
+    @Transactional
     public void addDiary(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(()->new MemberNotFoundException("Id : " + memberId + "인 멤버를 찾을 수 없습니다"));
@@ -46,6 +49,7 @@ public class DiaryService {
             int exitCode = process.waitFor();
             if (exitCode == 0) {
                 System.out.println("파이썬 스크립트 정상적으로 종료");
+                member.setDiaryWrittenToday(); //오늘 다이어리 작성 여부 값을 true로 변경
             } else {
                 System.err.println("파이썬 스크립트 비정상적인 종료. exitCode : " + exitCode);
             }
@@ -58,6 +62,7 @@ public class DiaryService {
 
     }
 
+    @Transactional(readOnly = true)
     public List<DiaryDTO> getDiaryList(Long memberId) {
         List<Diary> diaryList = diaryRepository.findByMemberId(memberId);
         List<DiaryDTO> diaryDTOList = diaryList
@@ -66,5 +71,36 @@ public class DiaryService {
                 .toList();
 
         return diaryDTOList;
+    }
+
+    @Transactional(readOnly = true)
+    public DiaryDTO getDiary(Long diaryId) {
+        Diary diary = diaryRepository.findById(diaryId)
+                .orElseThrow();
+        return DiaryDTO.of(diary);
+    }
+
+    @Transactional
+    public void deleteDiary(Long diaryId) {
+        Diary diary = diaryRepository.findById(diaryId)
+                        .orElseThrow();
+        diary.getMember().resetIsDiaryWrittenTodayStatus();
+        diaryRepository.deleteById(diaryId);
+
+    }
+
+    @Transactional
+    public void editDiary(Long diaryId, EditDiaryRequest editDiaryRequest) {
+        Diary diary = diaryRepository.findById(diaryId)
+                .orElseThrow();
+
+        diary.updateContent(editDiaryRequest.content());
+    }
+
+    @Transactional(readOnly = true)
+    public DiaryDTO getRecentDiary(Long memberId) {
+        Diary diary = diaryRepository.findFirstByMemberIdOrderByCreatedDateDesc(memberId)
+                .orElseThrow();
+        return DiaryDTO.of(diary);
     }
 }

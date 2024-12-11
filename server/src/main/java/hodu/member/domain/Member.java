@@ -18,6 +18,8 @@ public class Member extends BaseEntity {
 
     private long attendanceCount;
 
+    private boolean isDiaryWrittenToday;
+
     protected Member() {
     }
 
@@ -25,10 +27,7 @@ public class Member extends BaseEntity {
         this.attendanceCount = 0L;
         this.password = password;
         this.loginId = loginId;
-    }
-
-    public void addAttendanceCount () {
-        attendanceCount++;
+        this.isDiaryWrittenToday = false;
     }
 
     public Long getId() {
@@ -45,5 +44,17 @@ public class Member extends BaseEntity {
 
     public long getAttendanceCount() {
         return attendanceCount;
+    }
+
+    public boolean getIsDiaryWrittenToday() {
+        return isDiaryWrittenToday;
+    }
+
+    public void setDiaryWrittenToday() {
+        this.isDiaryWrittenToday = true;
+    }
+
+    public void resetIsDiaryWrittenTodayStatus() {
+        this.isDiaryWrittenToday = false;
     }
 }
