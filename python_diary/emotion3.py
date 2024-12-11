@@ -15,7 +15,7 @@ def analyze_emotion():
     # 데이터 가져오기 위한 경로 설정
     # emotion_model.hdf5 모델은 감정을 분류하는 딥러닝 모델 
     # angny, disgust, fear, happy, sad, surprise, neutral 제공
-    emotion_model_path = r"C:\Users\i\Desktop\emotion\Emotion\models\emotion_model.hdf5" 
+    emotion_model_path = r"../python_diary/models/emotion_model.hdf5" 
 
     # 사용한 데이터 셋 -> 48*48 크기의 흑백 얼굴 이미지를 포함하며, 감정 분류를 위한 공개 데이터 셋
     # 35,887개의 이미지가 있고, 7개의 감정 레이블로 구성되어있음
@@ -28,7 +28,7 @@ def analyze_emotion():
     # 오픈CV에서 제공하는 얼굴 검출 코드 반환
     # Haar-like Feature를 사용하여 물체를 감지하는 OpenCV의 객체 검출 기술
     # haarcascade_frontalface_default.xml은 정면 얼굴 검출을 위한 Haar Cascade Classifier
-    face_cascade = cv2.CascadeClassifier(r"C:\Users\i\Desktop\emotion\Emotion\models\haarcascade_frontalface_default.xml")
+    face_cascade = cv2.CascadeClassifier(r"../python_diary/models/haarcascade_frontalface_default.xml")
     emotion_classifier = load_model(emotion_model_path, compile=False)
 
     # 모델 재컴파일 -> 데이터와 모델이 조금 옛날 버전이라 현재의 이전 버전의 Keras/TensorFlow에서 학습되었기에 로드를 다시 해줌

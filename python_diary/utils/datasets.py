@@ -32,7 +32,7 @@ class DataManager(object):
         elif self.dataset_name == 'imdb':
             self.dataset_path = '../datasets/imdb_crop/imdb.mat'
         elif self.dataset_name == 'fer2013': # 감정 분류를 사용하기 위한 데이터 셋 사용
-            self.dataset_path = r"C:\Users\i\Desktop\emotion\Emotion\models\fer2013.csv"
+            self.dataset_path = r"../python_diary/models/fer2013.csv"
         elif self.dataset_name == 'KDEF':
             self.dataset_path = '../datasets/KDEF/'
         else:

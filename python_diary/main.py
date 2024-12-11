@@ -15,7 +15,7 @@ def run_record(result_queue):
     reduced_audio_file_path = reduce_noise(audio_file_path)
     
     # 결과를 큐에 저장 (태그: 'record')
-    result_queue.put(("stt", reduced_audio_file_path))
+    result_queue.put(("record", reduced_audio_file_path))
 
 # 감정분석 실행
 def run_analyze(result_queue):

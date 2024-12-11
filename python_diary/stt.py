@@ -8,7 +8,7 @@ from datetime import datetime
 model = WhisperModel("medium", device="cpu", compute_type="int8")
 
 #DB 연결
-conn = pymysql.connect(host='127.0.0.1', user='root', password='root', db='opensource', charset='utf8')
+conn = pymysql.connect(host='127.0.0.1', user='root', password='0000', db='opensource', charset='utf8')
 #커서 생성
 cur = conn.cursor()
 
@@ -23,6 +23,7 @@ def stt_audio(audio_file_path, emotion_result, memberId):
        print(segment.text, end = "") #각 세그먼트의 변역 결과물을 출력
        content +=segment.text
     print()
+    
 
     sql = """
     INSERT INTO diary (created_date, content, main_emotion, member_id)
