@@ -3,12 +3,9 @@ package hodu.diary.controller;
 import hodu.diary.dto.DiaryDTO;
 import hodu.diary.dto.request.EditDiaryRequest;
 import hodu.diary.service.DiaryService;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/diary")
@@ -42,5 +39,13 @@ public class DiaryController {
     ) {
         diaryService.editDiary(diaryId, editDiaryRequest);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping("/recent/{memberId}")
+    public ResponseEntity<DiaryDTO> getRecentDiary(
+            @PathVariable("memberId") Long memberId
+    ) {
+        DiaryDTO diaryDTO = diaryService.getRecentDiary(memberId);
+        return ResponseEntity.ok(diaryDTO);
     }
 }
