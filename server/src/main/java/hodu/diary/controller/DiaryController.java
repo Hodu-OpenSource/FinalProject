@@ -4,10 +4,7 @@ import hodu.diary.dto.DiaryDTO;
 import hodu.diary.service.DiaryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,7 +17,7 @@ public class DiaryController {
         this.diaryService = diaryService;
     }
 
-    @PostMapping
+    @PostMapping("/{memberId}")
     public ResponseEntity<Void> addDiary(
             @PathVariable("memberId") Long memberId
     ) {
@@ -28,6 +25,7 @@ public class DiaryController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @GetMapping("/{memberId}")
     public ResponseEntity<List<DiaryDTO>> getDiaryList(
             @PathVariable("memberId") Long memberId
     ) {
