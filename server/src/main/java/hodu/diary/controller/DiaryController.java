@@ -24,12 +24,4 @@ public class DiaryController {
         diaryService.addDiary(memberId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-
-    @GetMapping("/{memberId}")
-    public ResponseEntity<List<DiaryDTO>> getDiaryList(
-            @PathVariable("memberId") Long memberId
-    ) {
-        List<DiaryDTO> diaryList = diaryService.getDiaryList(memberId);
-        return ResponseEntity.ok(diaryList);
-    }
 }
