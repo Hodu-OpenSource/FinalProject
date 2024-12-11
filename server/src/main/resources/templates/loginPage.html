@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #ffffff;
+            color: #333;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        .container h1 {
+            font-size: 1.8rem;
+            color: #007BFF;
+            margin-bottom: 20px;
+        }
+        .container form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container input {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        .container button {
+            font-size: 1rem;
+            padding: 10px 20px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: #fff;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .container button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        /* 모달 스타일 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        .modal-content p {
+            margin-bottom: 20px;
+        }
+        .modal-content button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .modal-content button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>로그인</h1>
+    <form id="loginForm">
+        <input type="text" id="username" placeholder="아이디" required>
+        <input type="password" id="password" placeholder="비밀번호" required>
+        <button type="button" onclick="handleLogin()">로그인</button>
+    </form>
+</div>
+
+<!-- 모달 -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <p id="modalMessage"></p>
+        <button onclick="closeModal()">확인</button>
+    </div>
+</div>
+
+<script>
+    // 모달 열기
+    function openModal(message) {
+        document.getElementById("modalMessage").innerText = message;
+        document.getElementById("modal").style.display = "flex";
+    }
+
+    // 모달 닫기
+    function closeModal() {
+        document.getElementById("modal").style.display = "none";
+    }
+
+    // 로그인 처리
+    function handleLogin() {
+        const username = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value.trim();
+
+        // 입력값 검증
+        if (!username || !password) {
+            openModal("아이디와 비밀번호는 필수입니다.");
+            return;
+        }
+
+        // POST 요청
+        const url = `http://localhost:8080/api/member/login?loginId=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
+        fetch(url, {
+            method: "POST"
+        })
+        .then(async (response) => {
+            if (response.ok) {
+                const data = await response.json();
+                localStorage.setItem('memberId', data.memberId);
+                alert("로그인 성공!");
+
+                // 로컬 스토리지에서 memberId 가져오기
+                const memberId = localStorage.getItem('memberId');
+
+                // memberId를 URL의 PathVariable로 추가
+                const diaryMainPageUrl = `/view/diaryMainPage/${encodeURIComponent(memberId)}`;
+                window.location.href = diaryMainPageUrl; // URL로 이동
+            } else if (response.status === 400) {
+                const errorData = await response.json();
+                if (errorData.error === "아이디 또는 비밀번호가 틀렸습니다") {
+                    openModal("아이디 또는 비밀번호가 틀렸습니다.");
+                } else {
+                    openModal("로그인에 실패했습니다.");
+                }
+            } else {
+                openModal("알 수 없는 오류가 발생했습니다.");
+            }
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+            openModal("로그인 중 오류가 발생했습니다.");
+        });
+    }
+</script>
+</body>
+</html>
