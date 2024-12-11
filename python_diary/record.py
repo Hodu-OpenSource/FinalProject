@@ -11,7 +11,7 @@ def record_audio() :
     RATE = 22050 #샘플링 속도. 1초당 녹음하는 샘플의 수를 의미한다
 
     # 저장 디렉토리 설정
-    save_dir = "./python_diary/audio/" 
+    save_dir = "../python_diary/audio/" 
     os.makedirs(save_dir, exist_ok=True)  # 디렉토리 없으면 생성
     file_name = datetime.now().strftime("%Y-%m-%d_%H%M%S")  # 현재 시간을 오디오 파일명으로 설정
     # 파일 경로 설정. output_dir로
