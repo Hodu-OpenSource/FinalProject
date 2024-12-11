@@ -43,4 +43,8 @@ public class Diary extends BaseEntity {
     public String getMainEmotion() {
         return mainEmotion;
     }
+
+    public void updateContent (String content) {
+        this.content = content;
+    }
 }

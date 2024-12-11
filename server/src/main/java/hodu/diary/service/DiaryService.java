@@ -2,6 +2,7 @@ package hodu.diary.service;
 
 import hodu.diary.domain.Diary;
 import hodu.diary.dto.DiaryDTO;
+import hodu.diary.dto.request.EditDiaryRequest;
 import hodu.diary.repository.DiaryRepository;
 import hodu.member.domain.Member;
 import hodu.member.exception.MemberNotFoundException;
@@ -81,5 +82,13 @@ public class DiaryService {
     @Transactional
     public void deleteDiary(Long diaryId) {
         diaryRepository.deleteById(diaryId);
+    }
+
+    @Transactional
+    public void editDiary(Long diaryId, EditDiaryRequest editDiaryRequest) {
+        Diary diary = diaryRepository.findById(diaryId)
+                .orElseThrow();
+
+        diary.updateContent(editDiaryRequest.content());
     }
 }
