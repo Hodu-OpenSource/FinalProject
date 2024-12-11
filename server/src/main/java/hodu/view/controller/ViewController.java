@@ -66,4 +66,10 @@ public class ViewController {
         model.addAttribute("diary", diary);
         return "diaryDetailPage";
     }
+
+    @GetMapping("/writeDiaryPage")
+    public String writeDiary(
+    ) {
+        return "writeDiaryPage";
+    }
 }

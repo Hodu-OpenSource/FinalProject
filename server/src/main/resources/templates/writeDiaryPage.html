@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Write Diary Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f9f9f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #007BFF;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #555;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        textarea {
+            height: 150px;
+            resize: none;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>일기 작성</h1>
+
+    <!-- 생성 일자 -->
+    <div class="form-group">
+        <label for="creationDate">생성 일자</label>
+        <input type="text" id="creationDate" disabled>
+    </div>
+
+    <!-- 주된 감정 -->
+    <div class="form-group">
+        <label for="mainEmotion">주된 감정</label>
+        <input type="text" id="mainEmotion" disabled>
+    </div>
+
+    <!-- 일기 내용 -->
+    <div class="form-group">
+        <label for="diaryContent">일기 내용</label>
+        <textarea id="diaryContent"></textarea>
+    </div>
+
+    <!-- 버튼 -->
+    <button id="submitButton" onclick="updateDiary()">일기 작성 완료</button>
+</div>
+
+<script th:inline="javascript">
+    let diaryId = null; // 전역 변수로 diaryId 선언
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const memberId = localStorage.getItem("memberId");
+
+        if (!memberId) {
+            alert("회원 ID를 찾을 수 없습니다.");
+            return;
+        }
+
+        // POST 요청 보내기
+        fetch(`/api/diary/${memberId}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                creationDate: "",
+                mainEmotion: "",
+                content: ""
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("일기 생성 요청 중 오류가 발생했습니다.");
+            }
+            return fetch(`/api/diary/recent/${memberId}`);
+        })
+        .then(response => response.json())
+        .then(data => {
+            diaryId = data.id; // 전역 변수 diaryId에 값 할당
+            document.getElementById("creationDate").value = data.createdDate || "값 없음";
+            document.getElementById("mainEmotion").value = data.mainEmotion || "값 없음";
+            document.getElementById("diaryContent").value = data.content || "값 없음";
+            alert("일기 생성 요청이 완료되었습니다!");
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert(error.message || "네트워크 오류가 발생했습니다.");
+        });
+    });
+
+    function updateDiary() {
+        const memberId = localStorage.getItem("memberId");
+        const content = document.getElementById("diaryContent").value.trim();
+
+        if (!content) {
+            alert("수정할 내용을 입력하세요.");
+            return;
+        }
+
+        if (!diaryId) {
+            alert("일기 ID를 찾을 수 없습니다.");
+            return;
+        }
+
+        // diaryId를 pathVariable로 사용하여 PUT 요청
+        fetch(`/api/diary/${diaryId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ content: content })
+        })
+        .then(response => {
+            if (response.ok) {
+                alert("일기 수정이 완료되었습니다!");
+                // 일기 수정 완료 후 diaryMainPage로 리다이렉트
+                window.location.href = `/view/diaryMainPage/${memberId}`;
+            } else {
+                alert("일기 수정 중 오류가 발생했습니다.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("네트워크 오류가 발생했습니다.");
+        });
+    }
+</script>
+</body>
+</html>
