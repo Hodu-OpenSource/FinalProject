@@ -19,6 +19,9 @@ public class Diary extends BaseEntity {
 
     private String mainEmotion;
 
+    protected Diary() {
+    }
+
     public Diary(Member member, String content, String mainEmotion) {
         this.member = member;
         this.content = content;
