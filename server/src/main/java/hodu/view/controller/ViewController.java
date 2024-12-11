@@ -56,6 +56,7 @@ public class ViewController {
         return "diaryMainPage";
     }
 
+    //상세 일기 페이지
     @GetMapping("/diaryDetail/{diaryId}")
     public String diaryDetail (
             @PathVariable("diaryId") Long diaryId,
