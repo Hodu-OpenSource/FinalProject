@@ -51,6 +51,50 @@
         .link:hover {
             text-decoration: underline;
         }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .write-button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .write-button:hover {
+            background-color: #0056b3;
+        }
+        /* 모달 스타일 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        .modal-content button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -73,6 +117,37 @@
         </tr>
         </tbody>
     </table>
+
+    <!-- 일기 작성하기 버튼 -->
+    <div class="button-container">
+        <button class="write-button" onclick="handleWriteDiary()">일기 작성하기</button>
+    </div>
 </div>
+
+<!-- 모달 -->
+<div class="modal" id="alreadyWrittenModal">
+    <div class="modal-content">
+        <p>이미 오늘 일기를 작성하셨습니다.</p>
+        <button onclick="closeModal()">닫기</button>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    const isDiaryWrittenToday = /*[[${isDiaryWrittenToday}]]*/ false; // 서버에서 전달받은 값
+
+    function handleWriteDiary() {
+        if (isDiaryWrittenToday) {
+            // 오늘 이미 일기를 작성한 경우 모달 표시
+            document.getElementById("alreadyWrittenModal").style.display = "flex";
+        } else {
+            // 오늘 일기를 작성하지 않은 경우 작성 페이지로 이동
+            window.location.href = "/view/writeDiaryPage";
+        }
+    }
+
+    function closeModal() {
+        document.getElementById("alreadyWrittenModal").style.display = "none";
+    }
+</script>
 </body>
 </html>

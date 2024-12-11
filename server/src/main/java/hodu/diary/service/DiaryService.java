@@ -49,6 +49,7 @@ public class DiaryService {
             int exitCode = process.waitFor();
             if (exitCode == 0) {
                 System.out.println("파이썬 스크립트 정상적으로 종료");
+                member.setDiaryWrittenToday(); //오늘 다이어리 작성 여부 값을 true로 변경
             } else {
                 System.err.println("파이썬 스크립트 비정상적인 종료. exitCode : " + exitCode);
             }

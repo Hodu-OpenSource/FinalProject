@@ -2,6 +2,7 @@ package hodu.view.controller;
 
 import hodu.diary.dto.DiaryDTO;
 import hodu.diary.service.DiaryService;
+import hodu.member.service.MemberService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,9 +16,11 @@ import java.util.List;
 public class ViewController {
 
     private final DiaryService diaryService;
+    private final MemberService memberService;
 
-    public ViewController(DiaryService diaryService) {
+    public ViewController(DiaryService diaryService, MemberService memberService) {
         this.diaryService = diaryService;
+        this.memberService = memberService;
     }
 
     //최초 메인페이지
@@ -45,8 +48,10 @@ public class ViewController {
             Model model
     ){
         List<DiaryDTO> diaryList = diaryService.getDiaryList(memberId);
+        boolean isDiaryWrittenToday = memberService.getIsDiaryWrittenToday(memberId);
 
         model.addAttribute("diaryList", diaryList);
+        model.addAttribute("isDiaryWrittenToday", isDiaryWrittenToday);
 
         return "diaryMainPage";
     }
