@@ -7,6 +7,7 @@ import hodu.member.domain.Member;
 import hodu.member.exception.MemberNotFoundException;
 import hodu.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,6 +25,7 @@ public class DiaryService {
         this.memberRepository = memberRepository;
     }
 
+    @Transactional
     public void addDiary(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(()->new MemberNotFoundException("Id : " + memberId + "인 멤버를 찾을 수 없습니다"));
@@ -58,6 +60,7 @@ public class DiaryService {
 
     }
 
+    @Transactional(readOnly = true)
     public List<DiaryDTO> getDiaryList(Long memberId) {
         List<Diary> diaryList = diaryRepository.findByMemberId(memberId);
         List<DiaryDTO> diaryDTOList = diaryList
@@ -68,9 +71,15 @@ public class DiaryService {
         return diaryDTOList;
     }
 
+    @Transactional(readOnly = true)
     public DiaryDTO getDiary(Long diaryId) {
         Diary diary = diaryRepository.findById(diaryId)
                 .orElseThrow();
         return DiaryDTO.of(diary);
+    }
+
+    @Transactional
+    public void deleteDiary(Long diaryId) {
+        diaryRepository.deleteById(diaryId);
     }
 }

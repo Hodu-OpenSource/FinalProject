@@ -24,4 +24,12 @@ public class DiaryController {
         diaryService.addDiary(memberId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    @DeleteMapping("/{diaryId}")
+    public ResponseEntity<Void> deleteDiary(
+            @PathVariable("diaryId") Long diaryId
+    ) {
+        diaryService.deleteDiary(diaryId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }
