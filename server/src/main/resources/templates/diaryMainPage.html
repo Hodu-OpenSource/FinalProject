@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diary Main Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f9f9f9;
+            color: #333;
+        }
+        .container {
+            margin: 20px auto;
+            max-width: 800px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #007BFF;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #eaf4ff;
+        }
+        .link {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>일기 목록</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>생성일자</th>
+            <th>주된 감정</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- 일기 데이터 반복 출력 -->
+        <tr th:each="diary : ${diaryList}">
+            <td>
+                <a th:href="@{/view/diaryDetail/{id}(id=${diary.id})}" class="link" th:text="${diary.createdDate}"></a>
+            </td>
+            <td th:text="${diary.mainEmotion}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
